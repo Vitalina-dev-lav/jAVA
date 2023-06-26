@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Task6 {
+public class Task3_2 {
     public static void main(String[] args) throws Exception {
         System.out.print("Введите длину списка N: ");
         try (Scanner iScanner = new Scanner(System.in)) {

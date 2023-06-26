@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Task6_3 {
+public class Task3_1 {
     public static void main(String[] args) throws Exception {
         System.out.print("Введите длину списка N: ");
         try (Scanner iScanner = new Scanner(System.in)) {

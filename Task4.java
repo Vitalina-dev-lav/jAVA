@@ -1,39 +1,87 @@
-// 1) Дана строка sql-запроса "select * from students where ". Сформируйте часть WHERE этого запроса, используя StringBuilder. Данные для фильтрации приведены ниже в виде json-строки.
-// Если значение null, то параметр не должен попадать в запрос.
-// Параметры для фильтрации: {"name":"Ivanov", "country":"Russia", "city":"Moscow", "age":"null"}
-// Пример вывода: "select * from students WHERE name = Ivanov AND country = Russia.....".
-public class Task4 {
-    public static void main(String[] args) throws Exception {
-      String [] list = Lib.ReadLineFromFile("dataForSelect.txt"); 
-      System.out.println(list[0]); 
-      StringBuilder resultSelect = LineInList(list[0]);
-      System.out.println(resultSelect);
-    }
-    public static StringBuilder LineInList(String line) {
-        String line1 = line.replace("{", "");
-        String line2 = line1.replace("}", "");
-        String line3 = line2.replaceAll("\"", "");
-        System.out.println(line3);
-        StringBuilder result = new StringBuilder("select * from students where ");
+// Даны два Deque, представляющие два целых числа. Цифры хранятся в обратном порядке и каждый из их узлов содержит одну цифру.
+// 1) Умножьте два числа и верните произведение в виде связанного списка.
+// 2) Сложите два числа и верните сумму в виде связанного списка. Одно или два числа могут быть отрицательными.
 
-        String [] arrayData = line3.split(", ");
-        for (int i =0; i < arrayData.length; i++) {
-            String[] arrData = arrayData[i].split(":");
-            if(arrData[1].equals("null") == false) {
-                if (i != 0) {
-                    result.append(", ");
-                    result.append(arrData[0]);
-                    result.append(" = ");
-                    result.append(arrData[1]);
-                } else {
-                    result.append(arrData[0]);
-                    result.append(" = ");
-                    result.append(arrData[1]);
-                }
+// Даны два Deque, цифры в обратном порядке.
+// [3,2,1] - пример Deque
+// [5,4,3]- пример второго Deque
+// 1) 123 * 345 = 42 435
+// Ответ всегда - связный список, в обычном порядке
+// [4,2,4,3,5] - пример ответа
+
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Queue;
+
+ public class Task4{
+    
+    static int makeInt(Deque<String> arr) {
+        int result=0; 
+        String inS;   
+        int krat = 1; 
+
+        while(arr.size() != 0) {
+            inS = arr.pollFirst();
+            if (!inS.equals("-")) {
+                result = result + krat * (Integer.parseInt(inS));
+                krat *= 10;
+            } else {
+                result *= -1;
             }
-            
         }
         return result;
     }
+
+    static Queue<String> Pack(int in) {
+        Deque<String> q = new LinkedList<>();
+        int temp = 0;
+        boolean negative = false;
+        if (in < 0) {
+            in *= -1;
+            negative = true; 
+        }
+        while (in > 0) {
+            temp = in % 10;
+            in = (in - temp) / 10;
+            q.addFirst(Integer.toString(temp));
+        }
+        if (negative) {
+            q.addFirst("-");
+        }
+        return q;
+    }
+    public static void main(String[] args) {
+
+       
+        Deque<String> list_1 = new LinkedList<>(Arrays.asList("3","2","1"));
+        Deque<String> list_2 = new LinkedList<>(Arrays.asList("5","4","3"));
+        Deque<String> list_3 = new LinkedList<>(Arrays.asList("5","2"));
+        Deque<String> list_4 = new LinkedList<>(Arrays.asList("2","2","2"));
+        System.out.println("--------------------------------------------------------------");
+
+        
+        System.out.println("На старте: ");
+        System.out.println("Первая пара: " + list_1 + ", " + list_2);
+        System.out.println("Вторая пара: " + list_3 + ", " + list_4);
+        System.out.println();
+
+        int first_num = makeInt(list_1);
+        int second_num = makeInt(list_2);
+        int composition = first_num * second_num;
+        System.out.printf("%d * %d = %d\n", first_num, second_num, composition);
+
+        first_num = makeInt(list_3);
+        second_num = makeInt(list_4);
+        int composition_2 = first_num * second_num;
+        System.out.printf("%d * %d = %d\n", first_num, second_num, composition_2);
+
+        System.out.println();
+        System.out.println("Результирующие коллекции: ");
+        System.out.println(Pack(composition));
+        System.out.println(Pack(composition_2));
+                
+    }
+    
 }
 
